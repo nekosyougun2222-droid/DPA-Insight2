@@ -1,0 +1,19 @@
+# Free tier — no credit card for this plan. Data may reset when the instance sleeps/restarts.
+services:
+  - type: web
+    name: dpa-insight
+    runtime: node
+    plan: free
+    autoDeploy: true
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.1
+      - key: NODE_ENV
+        value: production
+      - key: AUTO_START_MODE
+        value: web
+      - key: AUTO_START_INTERVAL_MINUTES
+        value: "30"
