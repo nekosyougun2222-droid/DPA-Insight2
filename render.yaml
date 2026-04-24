@@ -5,10 +5,10 @@ services:
     name: dpa-insight
     runtime: node
     plan: free
-    # If Root Directory was set to "src", cwd is .../src — step up to repo root where package.json lives.
+    # Root Directory may be "src"; if src/package.json exists, package.json check skips cd — use build-icons.js / server.js instead.
     autoDeployTrigger: commit
-    buildCommand: if [ ! -f package.json ]; then cd ..; fi && npm install --omit=dev --ignore-scripts && node build-icons.js
-    startCommand: if [ ! -f package.json ]; then cd ..; fi && node server.js
+    buildCommand: if [ ! -f build-icons.js ]; then cd ..; fi && npm install --omit=dev --ignore-scripts && node build-icons.js
+    startCommand: if [ ! -f server.js ]; then cd ..; fi && node server.js
     healthCheckPath: /healthz
     envVars:
       - key: NODE_VERSION
