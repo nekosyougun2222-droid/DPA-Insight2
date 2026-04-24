@@ -1,11 +1,14 @@
 # Free tier — no credit card for this plan. Data may reset when the instance sleeps/restarts.
+# Build: skip install scripts (avoids sharp native compile OOM) and omit devDeps; icons use JS fallback.
 services:
   - type: web
     name: dpa-insight
     runtime: node
     plan: free
-    autoDeploy: true
-    buildCommand: npm install
+    # package.json is at repo root (fixes builds looking under ./src)
+    rootDir: "."
+    autoDeployTrigger: commit
+    buildCommand: npm install --omit=dev --ignore-scripts && node build-icons.js
     startCommand: node server.js
     healthCheckPath: /healthz
     envVars:
