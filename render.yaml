@@ -1,14 +1,12 @@
-# Free tier — no credit card for this plan. Data may reset when the instance sleeps/restarts.
-# Build: skip install scripts (avoids sharp native compile OOM) and omit devDeps; icons use JS fallback.
+# Free tier. Repo root must contain server.js, build-icons.js, package.json, etc. (push the whole project)
 services:
   - type: web
     name: dpa-insight
     runtime: node
     plan: free
-    # Root Directory may be "src"; if src/package.json exists, package.json check skips cd — use build-icons.js / server.js instead.
     autoDeployTrigger: commit
-    buildCommand: if [ ! -f build-icons.js ]; then cd ..; fi && npm install --omit=dev --ignore-scripts && node build-icons.js
-    startCommand: if [ ! -f server.js ]; then cd ..; fi && node server.js
+    buildCommand: npm install --omit=dev --ignore-scripts && node build-icons.js
+    startCommand: node server.js
     healthCheckPath: /healthz
     envVars:
       - key: NODE_VERSION
