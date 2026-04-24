@@ -1,12 +1,12 @@
-# Free tier. Repo root must contain server.js, build-icons.js, package.json, etc. (push the whole project)
+# Free tier. Build/start cwd may be wrongly set to "src" on Render — walk up to repo root.
 services:
   - type: web
     name: dpa-insight
     runtime: node
     plan: free
     autoDeployTrigger: commit
-    buildCommand: npm install --omit=dev --ignore-scripts && node build-icons.js
-    startCommand: node server.js
+    buildCommand: ROOT=$(pwd); while [ ! -f "$ROOT/build-icons.js" ] && [ "$ROOT" != "/" ]; do ROOT=$(dirname "$ROOT"); done; test -f "$ROOT/build-icons.js" || exit 1; cd "$ROOT" && npm install --omit=dev --ignore-scripts && node build-icons.js
+    startCommand: ROOT=$(pwd); while [ ! -f "$ROOT/server.js" ] && [ "$ROOT" != "/" ]; do ROOT=$(dirname "$ROOT"); done; test -f "$ROOT/server.js" || exit 1; cd "$ROOT" && node server.js
     healthCheckPath: /healthz
     envVars:
       - key: NODE_VERSION
