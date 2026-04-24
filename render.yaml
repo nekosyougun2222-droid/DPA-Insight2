@@ -5,11 +5,10 @@ services:
     name: dpa-insight
     runtime: node
     plan: free
-    # package.json is at repo root (fixes builds looking under ./src)
-    rootDir: "."
+    # If Root Directory was set to "src", cwd is .../src — step up to repo root where package.json lives.
     autoDeployTrigger: commit
-    buildCommand: npm install --omit=dev --ignore-scripts && node build-icons.js
-    startCommand: node server.js
+    buildCommand: if [ ! -f package.json ]; then cd ..; fi && npm install --omit=dev --ignore-scripts && node build-icons.js
+    startCommand: if [ ! -f package.json ]; then cd ..; fi && node server.js
     healthCheckPath: /healthz
     envVars:
       - key: NODE_VERSION
