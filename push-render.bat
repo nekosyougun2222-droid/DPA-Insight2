@@ -43,5 +43,6 @@ echo.
 echo OK。ブラウザで次を開き、server.js や build-icons.js が一覧に出るか確認してください:
 echo https://github.com/nekosyougun2222-droid/DPA-Insight2/tree/main
 echo.
+for /f "delims=" %%H in ('git rev-parse --short HEAD 2^>nul') do echo いまのローカル先頭コミット: %%H
 echo Render の dpa-insight → Settings → Root Directory は空にしてください。
 pause
